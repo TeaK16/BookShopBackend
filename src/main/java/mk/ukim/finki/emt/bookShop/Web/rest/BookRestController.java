@@ -36,7 +36,7 @@ public class BookRestController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Book> sava(@RequestParam String name,
+    public ResponseEntity<Book> save(@RequestParam String name,
                                      @RequestParam Category category,
                                      @RequestParam Long authorId,
                                      @RequestParam Integer availableCopies) {
