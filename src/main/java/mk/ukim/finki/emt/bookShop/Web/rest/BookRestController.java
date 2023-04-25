@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/book")
 public class BookRestController {
 
@@ -66,15 +67,15 @@ public class BookRestController {
     }
 
     @PostMapping("/reserveBook/{id}")
-    public ResponseEntity<Book> reserveBook(@PathVariable Long id,
-                                            @RequestParam Integer number) {
+    public ResponseEntity<Book> reserveBook(@PathVariable Long id) {
+        Integer number = 1;
         return this.bookService.reserveBooks(id, number)
                 .map(book -> ResponseEntity.ok().body(book))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
     @PostMapping("/returnBook/{id}")
-    public ResponseEntity<Book> returnBook(@PathVariable Long id,
-                                            @RequestParam Integer number) {
+    public ResponseEntity<Book> returnBook(@PathVariable Long id) {
+        Integer number = 1;
         return this.bookService.returnBooks(id,number)
                 .map(book -> ResponseEntity.ok().body(book))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
