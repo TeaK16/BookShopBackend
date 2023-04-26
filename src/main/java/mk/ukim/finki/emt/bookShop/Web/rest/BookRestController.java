@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -36,11 +37,7 @@ public class BookRestController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Book> save(@RequestParam String name,
-                                     @RequestParam Category category,
-                                     @RequestParam Long authorId,
-                                     @RequestParam Integer availableCopies) {
-        BookDto bookDto = new BookDto(name, category, authorId, availableCopies);
+    public ResponseEntity<Book> save(@RequestBody BookDto bookDto) {
         return this.bookService.save(bookDto)
                 .map(book -> ResponseEntity.ok().body(book))
                 .orElseGet(()-> ResponseEntity.badRequest().build());
@@ -48,12 +45,7 @@ public class BookRestController {
 
     @PutMapping("/edit/{id}")
     public ResponseEntity<Book> update(@PathVariable Long id,
-                                       @RequestParam String name,
-                                       @RequestParam Category category,
-                                       @RequestParam Long authorId,
-                                       @RequestParam Integer availableCopies) {
-
-        BookDto bookDto = new BookDto(name, category, authorId, availableCopies);
+                                       @RequestBody BookDto bookDto) {
         return this.bookService.update(id, bookDto)
                 .map(book -> ResponseEntity.ok().body(book))
                 .orElseGet(()-> ResponseEntity.badRequest().build());
@@ -79,6 +71,11 @@ public class BookRestController {
         return this.bookService.returnBooks(id,number)
                 .map(book -> ResponseEntity.ok().body(book))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
+    }
+
+    @GetMapping("/category")
+    public List<Category> listAllCategories() {
+        return Arrays.stream(Category.values()).toList();
     }
 
 }
